@@ -14,6 +14,7 @@ export const ContextProvider = ({ children }) => {
     try {
       let { data } = await axios.get(`${backendUrl}/api/auth/is-auth`, {
         withCredentials: true,
+          credentials: "include",
       });
       if (data.success) {
         setIsLoggedIn(true);

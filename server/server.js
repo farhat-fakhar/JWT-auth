@@ -18,15 +18,8 @@ const allowOrigin = [
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // allow requests with no origin (like curl, mobile apps, server-to-server)
-      if (!origin) return callback(null, true);
-      if (allowOrigin.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS policy: This origin is not allowed"));
-      }
-    },
+    origin:allowOrigin,
+   methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
