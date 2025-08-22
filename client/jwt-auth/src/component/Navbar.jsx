@@ -40,7 +40,7 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center py-3">
         {/* Logo */}
         <div
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate("/")}
           className="flex items-center space-x-2 cursor-pointer"
         >
           <img
