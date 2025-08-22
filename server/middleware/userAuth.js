@@ -2,7 +2,15 @@ import jwt from "jsonwebtoken";
 
 const userAuth = async (req, res, next) => {
   try {
-    const { token } = req?.cookies;
+    // safer token access: either cookie or Authorization header (Bearer ...)
+    const tokenFromCookie = req.cookies ? req.cookies.token : undefined;
+    const authHeader = req.headers.authorization || "";
+    const tokenFromHeader = authHeader.startsWith("Bearer ")
+      ? authHeader.split(" ")[1]
+      : undefined;
+
+    const token = tokenFromCookie || tokenFromHeader;
+
     if (!token) {
       return res
         .status(401)
@@ -20,6 +28,7 @@ const userAuth = async (req, res, next) => {
     req.user = { id: decoded.id };
     next();
   } catch (error) {
+    // optional: console.error("Auth error:", error);
     return res
       .status(401)
       .json({ success: false, message: "Unauthorized - Invalid token" });

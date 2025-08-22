@@ -7,18 +7,31 @@ import userRouter from "./routes/userRoute.js";
 import authRouter from "./routes/authRoutes.js";
 
 const app = express();
-const allowOrigin = [
-  "http://localhost:5173",
-  "https://jwt-auth-frontend-five.vercel.app",
-];
+ 
 app.use(express.json());
 app.use(cookieParser());
+ 
+const allowOrigin = [
+  "http://localhost:5173",
+  "https://jwt-auth-frontend-five.vercel.app"
+];
+
 app.use(
   cors({
-    origin: allowOrigin,
+    origin: (origin, callback) => {
+      // allow requests with no origin (like curl, mobile apps, server-to-server)
+      if (!origin) return callback(null, true);
+      if (allowOrigin.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS policy: This origin is not allowed"));
+      }
+    },
     credentials: true,
   })
 );
+
+
 app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 4000;
 
