@@ -23,8 +23,8 @@ export const register = async (req, res) => {
     });
     res.cookie("token", token, {
       httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -165,7 +165,7 @@ export const verifyOtp = async (req, res) => {
 
 export const isAuth = async (req, res) => {
   try {
-    return res.send({ success: true , user:req.user});
+    return res.send({ success: true, user: req.user });
   } catch (error) {
     res.send({ success: false, error: error.message });
   }
@@ -184,7 +184,7 @@ export const sendResetOtp = async (req, res) => {
 
     const otp = String(Math.floor(100000 + Math.random() * 900000));
     user.resetOtp = otp;
-user.resetOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
+    user.resetOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
     await user.save();
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
@@ -206,7 +206,7 @@ user.resetOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
 
 export const resetPassword = async (req, res) => {
   const { otp, email, newPassword } = req.body;
-  if (!email, !otp, !newPassword) {
+  if ((!email, !otp, !newPassword)) {
     return res.send({ success: false, message: "details are missing" });
   }
   try {
