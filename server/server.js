@@ -7,7 +7,10 @@ import userRouter from "./routes/userRoute.js";
 import authRouter from "./routes/authRoutes.js";
 
 const app = express();
-const allowOrigin=['https://jwt-auth-frontend-five.vercel.app']
+const allowOrigin = [
+  "http://localhost:5173",
+  "https://jwt-auth-frontend-five.vercel.app",
+];
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -25,7 +28,6 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
-
 
 (async () => {
   try {

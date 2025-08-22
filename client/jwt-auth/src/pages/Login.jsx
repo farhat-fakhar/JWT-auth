@@ -20,7 +20,7 @@ const AuthForm = () => {
     try {
       // handle sign up form
       if (mode === "Sign Up") {
-        let res = await axios.post(`${backendUrl}/api/auth/register`, formData);
+        let res = await axios.post(`${backendUrl}/api/auth/register`, formData, { withCredentials: true } );
         if (res.data.success) {
           toast.success("User Registered Successfully!");
           setIsLoggedIn(true);
@@ -33,10 +33,14 @@ const AuthForm = () => {
       } else {
         //  handle login form
         const { email, password } = formData;
-        const { data } = await axios.post(`${backendUrl}/api/auth/login`, {
-          email,
-          password,
-        });
+        const { data } = await axios.post(
+          `${backendUrl}/api/auth/login`,
+          {
+            email,
+            password,
+          },
+          { withCredentials: true }
+        );
         if (data.success) {
           setIsLoggedIn(true);
           getUser();
